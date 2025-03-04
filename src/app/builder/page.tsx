@@ -1,33 +1,34 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { type FormConfig, FormField } from "@/lib/types"
-import { FieldToolbar } from "@/components/builder/field-toolbar"
-import { FormPreview } from "@/components/builder/form-preview"
-import { FormExport } from "@/components/builder/form-export"
-import { cn } from "@/lib/utils"
-import { FormFieldEditor } from "@/components/builder/form-field-editor"
+import { useState } from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { type FormConfig } from "@/lib/types";
+import { FieldToolbar } from "@/components/builder/field-toolbar";
+import { FormPreview } from "@/components/builder/form-preview";
+import { FormExport } from "@/components/builder/form-export";
+import { cn } from "@/lib/utils";
+import { FormFieldEditor } from "@/components/builder/form-field-editor";
 
 function Page() {
   const [activeForm, setActiveForm] = useState<FormConfig>({
     id: "1",
     name: "New Form",
     fields: [],
-    type: "basic",
-  })
+    type: "basic"
+  });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onDragEnd = (result: any) => {
-    if (!result.destination) return
+    if (!result.destination) return;
 
-    const fields = Array.from(activeForm.fields)
-    const [reorderedItem] = fields.splice(result.source.index, 1)
-    fields.splice(result.destination.index, 0, reorderedItem)
+    const fields = Array.from(activeForm.fields);
+    const [reorderedItem] = fields.splice(result.source.index, 1);
+    fields.splice(result.destination.index, 0, reorderedItem);
 
-    setActiveForm({ ...activeForm, fields })
-  }
+    setActiveForm({ ...activeForm, fields });
+  };
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -37,8 +38,8 @@ function Page() {
           onAddField={(field) => {
             setActiveForm({
               ...activeForm,
-              fields: [...activeForm.fields, field],
-            })
+              fields: [...activeForm.fields, field]
+            });
           }}
         />
       </div>
@@ -92,13 +93,13 @@ function Page() {
                               <FormFieldEditor
                                 field={field}
                                 onUpdate={(updatedField) => {
-                                  const newFields = [...activeForm.fields]
-                                  newFields[index] = updatedField
-                                  setActiveForm({ ...activeForm, fields: newFields })
+                                  const newFields = [...activeForm.fields];
+                                  newFields[index] = updatedField;
+                                  setActiveForm({ ...activeForm, fields: newFields });
                                 }}
                                 onDelete={() => {
-                                  const newFields = activeForm.fields.filter((_, i) => i !== index)
-                                  setActiveForm({ ...activeForm, fields: newFields })
+                                  const newFields = activeForm.fields.filter((_, i) => i !== index);
+                                  setActiveForm({ ...activeForm, fields: newFields });
                                 }}
                               />
                             </div>
@@ -123,7 +124,7 @@ function Page() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Page;

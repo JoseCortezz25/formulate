@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Search } from "lucide-react"
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Search } from "lucide-react";
 import type { FormField } from "@/lib/types";
 
 const FIELD_TYPES = [
@@ -12,37 +12,37 @@ const FIELD_TYPES = [
     items: [
       { type: "text", label: "Single line" },
       { type: "email", label: "Email" },
-      { type: "password", label: "Password" },
-    ],
+      { type: "password", label: "Password" }
+    ]
   },
   {
     category: "Long Text",
-    items: [{ type: "textarea", label: "Multiline" }],
+    items: [{ type: "textarea", label: "Multiline" }]
   },
   {
     category: "Options",
     items: [
       { type: "select", label: "Dropdown" },
       { type: "radio", label: "Multiple Choice" },
-      { type: "checkbox", label: "Checkboxes" },
-    ],
+      { type: "checkbox", label: "Checkboxes" }
+    ]
   },
   {
     category: "Yes/No",
     items: [
       { type: "switch", label: "Switch" },
-      { type: "checkbox", label: "Single Checkbox" },
-    ],
+      { type: "checkbox", label: "Single Checkbox" }
+    ]
   },
   {
     category: "Numbers",
-    items: [{ type: "number", label: "Number" }],
+    items: [{ type: "number", label: "Number" }]
   },
   {
     category: "Date and Time",
-    items: [{ type: "date", label: "Date" }],
-  },
-]
+    items: [{ type: "date", label: "Date" }]
+  }
+];
 
 interface FieldToolbarProps {
   onAddField: (field: FormField) => void
@@ -69,11 +69,11 @@ export function FieldToolbar({ onAddField }: FieldToolbarProps) {
                   onClick={() => {
                     onAddField({
                       id: `${item.type}-${Date.now()}`,
-                      type: item.type as any,
+                      type: item.type as any, // eslint-disable-line @typescript-eslint/no-explicit-any
                       label: `New ${item.label}`,
                       placeholder: `Enter ${item.label.toLowerCase()}`,
-                      required: false,
-                    })
+                      required: false
+                    });
                   }}
                 >
                   {item.label}
@@ -84,6 +84,6 @@ export function FieldToolbar({ onAddField }: FieldToolbarProps) {
         ))}
       </ScrollArea>
     </div>
-  )
+  );
 }
 

@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import type { FormField } from "@/lib/types"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
-import { Button } from "@/components/ui/button"
-import { Trash2 } from "lucide-react"
+import type { FormField } from "@/lib/types";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 // import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { ChevronDown, ChevronUp } from "lucide-react"
-import { useState } from "react"
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
 
 interface FormFieldEditorProps {
   field: FormField
@@ -17,7 +17,7 @@ interface FormFieldEditorProps {
 }
 
 export function FormFieldEditor({ field, onUpdate, onDelete }: FormFieldEditorProps) {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -77,8 +77,8 @@ export function FormFieldEditor({ field, onUpdate, onDelete }: FormFieldEditorPr
                           ...field,
                           validation: {
                             ...field.validation,
-                            minLength: e.target.value ? Number.parseInt(e.target.value) : undefined,
-                          },
+                            minLength: e.target.value ? Number.parseInt(e.target.value) : undefined
+                          }
                         })
                       }
                     />
@@ -94,8 +94,8 @@ export function FormFieldEditor({ field, onUpdate, onDelete }: FormFieldEditorPr
                           ...field,
                           validation: {
                             ...field.validation,
-                            maxLength: e.target.value ? Number.parseInt(e.target.value) : undefined,
-                          },
+                            maxLength: e.target.value ? Number.parseInt(e.target.value) : undefined
+                          }
                         })
                       }
                     />
@@ -115,8 +115,8 @@ export function FormFieldEditor({ field, onUpdate, onDelete }: FormFieldEditorPr
                           ...field,
                           validation: {
                             ...field.validation,
-                            min: e.target.value ? Number.parseInt(e.target.value) : undefined,
-                          },
+                            min: e.target.value ? Number.parseInt(e.target.value) : undefined
+                          }
                         })
                       }
                     />
@@ -132,8 +132,8 @@ export function FormFieldEditor({ field, onUpdate, onDelete }: FormFieldEditorPr
                           ...field,
                           validation: {
                             ...field.validation,
-                            max: e.target.value ? Number.parseInt(e.target.value) : undefined,
-                          },
+                            max: e.target.value ? Number.parseInt(e.target.value) : undefined
+                          }
                         })
                       }
                     />
@@ -151,8 +151,8 @@ export function FormFieldEditor({ field, onUpdate, onDelete }: FormFieldEditorPr
                         ...field,
                         validation: {
                           ...field.validation,
-                          pattern: e.target.value,
-                        },
+                          pattern: e.target.value
+                        }
                       })
                     }
                   />
@@ -170,18 +170,18 @@ export function FormFieldEditor({ field, onUpdate, onDelete }: FormFieldEditorPr
                 <Input
                   value={option.label}
                   onChange={(e) => {
-                    const newOptions = [...(field.options || [])]
-                    newOptions[index] = { ...option, label: e.target.value }
-                    onUpdate({ ...field, options: newOptions })
+                    const newOptions = [...(field.options || [])];
+                    newOptions[index] = { ...option, label: e.target.value };
+                    onUpdate({ ...field, options: newOptions });
                   }}
                   placeholder="Option label"
                 />
                 <Input
                   value={option.value}
                   onChange={(e) => {
-                    const newOptions = [...(field.options || [])]
-                    newOptions[index] = { ...option, value: e.target.value }
-                    onUpdate({ ...field, options: newOptions })
+                    const newOptions = [...(field.options || [])];
+                    newOptions[index] = { ...option, value: e.target.value };
+                    onUpdate({ ...field, options: newOptions });
                   }}
                   placeholder="Option value"
                 />
@@ -189,8 +189,8 @@ export function FormFieldEditor({ field, onUpdate, onDelete }: FormFieldEditorPr
                   variant="ghost"
                   size="icon"
                   onClick={() => {
-                    const newOptions = field.options?.filter((_, i) => i !== index)
-                    onUpdate({ ...field, options: newOptions })
+                    const newOptions = field.options?.filter((_, i) => i !== index);
+                    onUpdate({ ...field, options: newOptions });
                   }}
                 >
                   <Trash2 className="h-4 w-4" />
@@ -200,8 +200,8 @@ export function FormFieldEditor({ field, onUpdate, onDelete }: FormFieldEditorPr
             <Button
               variant="outline"
               onClick={() => {
-                const newOptions = [...(field.options || []), { label: "", value: "" }]
-                onUpdate({ ...field, options: newOptions })
+                const newOptions = [...(field.options || []), { label: "", value: "" }];
+                onUpdate({ ...field, options: newOptions });
               }}
             >
               Add Option
@@ -210,6 +210,6 @@ export function FormFieldEditor({ field, onUpdate, onDelete }: FormFieldEditorPr
         )}
       </div>
     </div>
-  )
+  );
 }
 

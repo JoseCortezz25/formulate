@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import type { FormConfig } from "@/lib/types"
-import { Button } from "@/components/ui/button"
+import type { FormConfig } from "@/lib/types";
+import { Button } from "@/components/ui/button";
 
 interface FormExportProps {
   form: FormConfig
@@ -20,19 +20,19 @@ export function FormExport({ form }: FormExportProps) {
               return `  <div>
     <label for="${field.id}">${field.label}</label>
     <input type="${field.type}" id="${field.id}" name="${field.id}" ${field.required ? "required" : ""} placeholder="${field.placeholder || ""}" />
-  </div>`
+  </div>`;
             case "textarea":
               return `  <div>
     <label for="${field.id}">${field.label}</label>
     <textarea id="${field.id}" name="${field.id}" ${field.required ? "required" : ""} placeholder="${field.placeholder || ""}"></textarea>
-  </div>`
+  </div>`;
             case "select":
               return `  <div>
     <label for="${field.id}">${field.label}</label>
     <select id="${field.id}" name="${field.id}" ${field.required ? "required" : ""}>
       ${field.options?.map((option) => `<option value="${option.value}">${option.label}</option>`).join("\n      ")}
     </select>
-  </div>`
+  </div>`;
             case "radio":
               return `  <div>
     <fieldset>
@@ -42,26 +42,26 @@ export function FormExport({ form }: FormExportProps) {
                     (option) => `      <label>
         <input type="radio" name="${field.id}" value="${option.value}" ${field.required ? "required" : ""} />
         ${option.label}
-      </label>`,
+      </label>`
                   )
                   .join("\n")}
     </fieldset>
-  </div>`
+  </div>`;
             case "checkbox":
               return `  <div>
     <label>
       <input type="checkbox" id="${field.id}" name="${field.id}" ${field.required ? "required" : ""} />
       ${field.label}
     </label>
-  </div>`
+  </div>`;
             default:
-              return ""
+              return "";
           }
         })
         .join("\n\n")}
   
   <button type="submit">Submit</button>
-</form>`
+</form>`;
 
     const validationScript = `
 <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
@@ -70,37 +70,37 @@ export function FormExport({ form }: FormExportProps) {
   
   ${form.fields
         .map((field) => {
-          const rules = []
+          const rules = [];
           if (field.required) {
-            rules.push(`required: true`)
+            rules.push(`required: true`);
           }
           if (field.validation) {
             if (field.validation.minLength) {
-              rules.push(`minLength: ${field.validation.minLength}`)
+              rules.push(`minLength: ${field.validation.minLength}`);
             }
             if (field.validation.maxLength) {
-              rules.push(`maxLength: ${field.validation.maxLength}`)
+              rules.push(`maxLength: ${field.validation.maxLength}`);
             }
             if (field.validation.min) {
-              rules.push(`min: ${field.validation.min}`)
+              rules.push(`min: ${field.validation.min}`);
             }
             if (field.validation.max) {
-              rules.push(`max: ${field.validation.max}`)
+              rules.push(`max: ${field.validation.max}`);
             }
             if (field.validation.pattern) {
-              rules.push(`pattern: { value: ${field.validation.pattern} }`)
+              rules.push(`pattern: { value: ${field.validation.pattern} }`);
             }
           }
           if (field.type === "email") {
-            rules.push(`email: true`)
+            rules.push(`email: true`);
           }
 
           if (rules.length > 0) {
             return `  validator.addField('#${field.id}', [
     { ${rules.join(", ")} }
-  ]);`
+  ]);`;
           }
-          return ""
+          return "";
         })
         .filter(Boolean)
         .join("\n\n")}
@@ -108,10 +108,10 @@ export function FormExport({ form }: FormExportProps) {
   validator.onSuccess((event) => {
     console.log('Validation passes and form submitted', event);
   });
-</script>`
+</script>`;
 
-    return formHtml + "\n\n" + validationScript
-  }
+    return formHtml + "\n\n" + validationScript;
+  };
 
   const generateShadcnCode = () => {
     return `import { Button } from "@/components/ui/button"
@@ -128,34 +128,34 @@ import * as z from "zod"
 const formSchema = z.object({
   ${form.fields
         .map((field) => {
-          let schema = `z.string()`
+          let schema = `z.string()`;
           if (field.required) {
-            schema += `.min(1, "This field is required")`
+            schema += `.min(1, "This field is required")`;
           }
           if (field.validation) {
             if (field.validation.minLength) {
-              schema += `.min(${field.validation.minLength}, "Minimum length is ${field.validation.minLength}")`
+              schema += `.min(${field.validation.minLength}, "Minimum length is ${field.validation.minLength}")`;
             }
             if (field.validation.maxLength) {
-              schema += `.max(${field.validation.maxLength}, "Maximum length is ${field.validation.maxLength}")`
+              schema += `.max(${field.validation.maxLength}, "Maximum length is ${field.validation.maxLength}")`;
             }
             if (field.type === "number") {
-              schema = `z.number()`
+              schema = `z.number()`;
               if (field.validation.min !== undefined) {
-                schema += `.min(${field.validation.min}, "Minimum value is ${field.validation.min}")`
+                schema += `.min(${field.validation.min}, "Minimum value is ${field.validation.min}")`;
               }
               if (field.validation.max !== undefined) {
-                schema += `.max(${field.validation.max}, "Maximum value is ${field.validation.max}")`
+                schema += `.max(${field.validation.max}, "Maximum value is ${field.validation.max}")`;
               }
             }
             if (field.validation.pattern) {
-              schema += `.regex(new RegExp(${field.validation.pattern}), "Invalid format")`
+              schema += `.regex(new RegExp(${field.validation.pattern}), "Invalid format")`;
             }
           }
           if (field.type === "email") {
-            schema += `.email("Invalid email address")`
+            schema += `.email("Invalid email address")`;
           }
-          return `  ${field.id}: ${schema},`
+          return `  ${field.id}: ${schema},`;
         })
         .join("\n")}
 })
@@ -192,7 +192,7 @@ export default function Form() {
         {form.formState.errors.${field.id} && (
           <p className="text-sm text-red-500">{form.formState.errors.${field.id}?.message}</p>
         )}
-      </div>`
+      </div>`;
             case "textarea":
               return `<div className="space-y-2">
         <Label htmlFor="${field.id}">${field.label}</Label>
@@ -204,7 +204,7 @@ export default function Form() {
         {form.formState.errors.${field.id} && (
           <p className="text-sm text-red-500">{form.formState.errors.${field.id}?.message}</p>
         )}
-      </div>`
+      </div>`;
             case "select":
               return `<div className="space-y-2">
         <Label htmlFor="${field.id}">${field.label}</Label>
@@ -221,7 +221,7 @@ export default function Form() {
         {form.formState.errors.${field.id} && (
           <p className="text-sm text-red-500">{form.formState.errors.${field.id}?.message}</p>
         )}
-      </div>`
+      </div>`;
             case "radio":
               return `<div className="space-y-2">
         <Label>${field.label}</Label>
@@ -231,14 +231,14 @@ export default function Form() {
                     (option) => `<div className="flex items-center space-x-2">
             <RadioGroupItem value="${option.value}" id="${field.id}-${option.value}" />
             <Label htmlFor="${field.id}-${option.value}">${option.label}</Label>
-          </div>`,
+          </div>`
                   )
                   .join("\n          ")}
         </RadioGroup>
         {form.formState.errors.${field.id} && (
           <p className="text-sm text-red-500">{form.formState.errors.${field.id}?.message}</p>
         )}
-      </div>`
+      </div>`;
             case "checkbox":
               return `<div className="flex items-center space-x-2">
         <Checkbox id="${field.id}" {...form.register("${field.id}")} />
@@ -246,9 +246,9 @@ export default function Form() {
       </div>
       {form.formState.errors.${field.id} && (
         <p className="text-sm text-red-500">{form.formState.errors.${field.id}?.message}</p>
-      )}`
+      )}`;
             default:
-              return ""
+              return "";
           }
         })
         .join("\n\n      ")}
@@ -256,8 +256,8 @@ export default function Form() {
       <Button type="submit">Submit</Button>
     </form>
   )
-}`
-  }
+}`;
+  };
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -270,7 +270,7 @@ export default function Form() {
           <div className="mt-4">
             <Button
               onClick={() => {
-                navigator.clipboard.writeText(form.type === "basic" ? generateBasicHtml() : generateShadcnCode())
+                navigator.clipboard.writeText(form.type === "basic" ? generateBasicHtml() : generateShadcnCode());
               }}
             >
               Copy to Clipboard
@@ -279,6 +279,6 @@ export default function Form() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
