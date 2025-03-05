@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search } from "lucide-react";
 import type { FormField } from "@/lib/types";
+import { useState } from "react";
 
 const FIELD_TYPES = [
   {
@@ -49,15 +50,40 @@ interface FieldToolbarProps {
 }
 
 export function FieldToolbar({ onAddField }: FieldToolbarProps) {
+  const [search, setSearch] = useState("");
+  const [filteredFields, setFilteredFields] = useState(FIELD_TYPES);
+
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    if (value === "") {
+      setFilteredFields(FIELD_TYPES);
+      return;
+    }
+
+    const filtered = FIELD_TYPES.map((category) => ({
+      ...category,
+      items: category.items.filter((item) =>
+        item.label.toLowerCase().includes(value.toLowerCase())
+      )
+    })).filter((category) => category.items.length > 0);
+
+    setFilteredFields(filtered);
+  };
+
   return (
     <div className="space-y-4 mx-6 my-4">
       <div className="relative">
         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-        <Input placeholder="Search components" className="pl-8" />
+        <Input
+          placeholder="Search components"
+          className="pl-8"
+          value={search}
+          onChange={(e) => handleSearch(e.target.value)}
+        />
       </div>
 
       <ScrollArea className="h-[calc(100vh-8rem)]">
-        {FIELD_TYPES.map((category) => (
+        {filteredFields.map((category) => (
           <div key={category.category} className="mb-6">
             <h3 className="text-sm font-medium mb-2 text-muted-foreground">{category.category}</h3>
             <div className="space-y-2">
