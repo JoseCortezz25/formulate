@@ -1,4 +1,3 @@
-
 const Navbar = () => {
   return (
     <header className="bg-white">
@@ -6,7 +5,7 @@ const Navbar = () => {
         <span className="font-bold text-lg">Formulate</span>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
