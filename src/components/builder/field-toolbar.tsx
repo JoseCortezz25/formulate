@@ -50,7 +50,7 @@ interface FieldToolbarProps {
 
 export function FieldToolbar({ onAddField }: FieldToolbarProps) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 mx-6 my-4">
       <div className="relative">
         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input placeholder="Search components" className="pl-8" />

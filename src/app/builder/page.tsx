@@ -31,97 +31,110 @@ function Page() {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Left Sidebar - Field Toolbar */}
-      <div className="w-64 bg-white border-r border-gray-200 p-4">
-        <FieldToolbar
-          onAddField={(field) => {
-            setActiveForm({
-              ...activeForm,
-              fields: [...activeForm.fields, field]
-            });
-          }}
-        />
-      </div>
-
+    <div className="flex">
       {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <div className="p-6">
-          <Tabs defaultValue="design" className="w-full">
-            <div className="flex items-center justify-between mb-6">
-              <TabsList>
-                <TabsTrigger value="design">Design</TabsTrigger>
-                <TabsTrigger value="preview">Preview</TabsTrigger>
-                <TabsTrigger value="export">Export</TabsTrigger>
-              </TabsList>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setActiveForm({ ...activeForm, type: "basic" })}
-                  className={cn(activeForm.type === "basic" && "bg-primary text-primary-foreground")}
-                >
-                  Basic HTML
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setActiveForm({ ...activeForm, type: "shadcn" })}
-                  className={cn(activeForm.type === "shadcn" && "bg-primary text-primary-foreground")}
-                >
-                  shadcn/ui
-                </Button>
-              </div>
+      <div className="w-full">
+        <Tabs defaultValue="design" className="w-full gap-0">
+          <div className="flex items-center justify-between p-4 bg-white">
+            <span className="font-bold text-lg lg:max-w-[300px] lg:w-[300px]">
+              Formulate
+            </span>
+
+            <TabsList className="rounded-full px-1 h-auto">
+              <TabsTrigger className="py-2 px-5 rounded-full cursor-pointer" value="design">Build Form</TabsTrigger>
+              <TabsTrigger className="py-2 px-5 rounded-full cursor-pointer" value="preview">Preview</TabsTrigger>
+              <TabsTrigger className="py-2 px-5 rounded-full cursor-pointer" value="export">Export</TabsTrigger>
+            </TabsList>
+
+            <div className="flex justify-end gap-2 lg:max-w-[300px] lg:w-[300px]">
+              <Button
+                variant="outline"
+                onClick={() => setActiveForm({ ...activeForm, type: "basic" })}
+                className={cn(activeForm.type === "basic" && "bg-primary text-primary-foreground", "rounded-full py-2")}
+              >
+                Basic HTML
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setActiveForm({ ...activeForm, type: "shadcn" })}
+                className={cn(activeForm.type === "shadcn" && "bg-primary text-primary-foreground", "rounded-full py-2")}
+              >
+                shadcn / ui
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex w-full">
+            {/* Left Sidebar - Field Toolbar */}
+            <div className="min-w-[350px] bg-white sticky top-0">
+              <FieldToolbar
+                onAddField={(field) => {
+                  setActiveForm({
+                    ...activeForm,
+                    fields: [...activeForm.fields, field]
+                  });
+                }}
+              />
             </div>
 
-            <TabsContent value="design" className="mt-0">
-              <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="form-fields" isDropDisabled={false}>
-                  {(provided) => (
-                    <div
-                      {...provided.droppableProps}
-                      ref={provided.innerRef}
-                      className="space-y-4"
-                    >
-                      {activeForm.fields.map((field, index) => (
-                        <Draggable key={field.id} draggableId={field.id} index={index}>
-                          {(provided) => (
-                            <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
-                              className="bg-white p-4 rounded-lg shadow-sm border border-gray-200"
-                            >
-                              <FormFieldEditor
-                                field={field}
-                                onUpdate={(updatedField) => {
-                                  const newFields = [...activeForm.fields];
-                                  newFields[index] = updatedField;
-                                  setActiveForm({ ...activeForm, fields: newFields });
-                                }}
-                                onDelete={() => {
-                                  const newFields = activeForm.fields.filter((_, i) => i !== index);
-                                  setActiveForm({ ...activeForm, fields: newFields });
-                                }}
-                              />
-                            </div>
-                          )}
-                        </Draggable>
-                      ))}
-                      {provided.placeholder}
-                    </div>
-                  )}
-                </Droppable>
-              </DragDropContext>
-            </TabsContent>
+            <div className="w-full flex items-start justify-center pt-9 bg-gray-100 rounded-tl-[15px] inset-shadow-sm">
+              <TabsContent value="design" className="mt-0 max-w-[50%]">
+                <DragDropContext onDragEnd={onDragEnd}>
+                  <Droppable droppableId="form-fields" isDropDisabled={false}>
+                    {(provided) => (
+                      <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        className="space-y-4"
+                      >
+                        {activeForm.fields.length === 0 && (
+                          <div className="bg-white p-8 rounded-lg shadow-sm border border-dashed border-gray-300 text-center">
+                            <p className="text-gray-500 mb-2">No fields added yet</p>
+                            <p className="text-sm text-gray-400">Add your first field from the toolbar on the left</p>
+                          </div>
+                        )}
+                        {activeForm.fields.map((field, index) => (
+                          <Draggable key={field.id} draggableId={field.id} index={index}>
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className="bg-white p-4 rounded-lg shadow-sm border border-gray-200"
+                              >
+                                <FormFieldEditor
+                                  field={field}
+                                  onUpdate={(updatedField) => {
+                                    const newFields = [...activeForm.fields];
+                                    newFields[index] = updatedField;
+                                    setActiveForm({ ...activeForm, fields: newFields });
+                                  }}
+                                  onDelete={() => {
+                                    const newFields = activeForm.fields.filter((_, i) => i !== index);
+                                    setActiveForm({ ...activeForm, fields: newFields });
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </DragDropContext>
+              </TabsContent>
 
-            <TabsContent value="preview">
-              <FormPreview form={activeForm} />
-            </TabsContent>
+              <TabsContent value="preview">
+                <FormPreview form={activeForm} />
+              </TabsContent>
 
-            <TabsContent value="export">
-              <FormExport form={activeForm} />
-            </TabsContent>
-          </Tabs>
-        </div>
+              <TabsContent value="export">
+                <FormExport form={activeForm} />
+              </TabsContent>
+            </div>
+          </div>
+        </Tabs>
       </div>
     </div>
   );

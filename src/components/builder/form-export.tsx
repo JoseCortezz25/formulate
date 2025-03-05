@@ -105,6 +105,10 @@ export function FormExport({ form }: FormExportProps) {
         .filter(Boolean)
         .join("\n\n")}
 
+  validator.onValidate(({isValid}) => {
+    console.log('Validation passes and form submitted', isValid);
+  });
+
   validator.onSuccess((event) => {
     console.log('Validation passes and form submitted', event);
   });
