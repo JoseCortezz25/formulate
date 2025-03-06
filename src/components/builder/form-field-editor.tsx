@@ -22,7 +22,12 @@ export function FormFieldEditor({ field, onUpdate, onDelete }: FormFieldEditorPr
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="font-medium">{field.type.charAt(0).toUpperCase() + field.type.slice(1)} Field</h3>
-        <Button variant="ghost" size="icon" onClick={onDelete}>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onDelete}
+          className="hover:bg-red-100/20 hover:text-red-800 cursor-pointer"
+        >
           <Trash2 className="h-4 w-4" />
         </Button>
       </div>

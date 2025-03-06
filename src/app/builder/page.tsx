@@ -31,7 +31,7 @@ function Page() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex ">
       {/* Main Content */}
       <div className="w-full">
         <Tabs defaultValue="design" className="w-full gap-0">
@@ -66,7 +66,7 @@ function Page() {
 
           <div className="flex w-full">
             {/* Left Sidebar - Field Toolbar */}
-            <div className="min-w-[350px] bg-white sticky top-0">
+            <div className="min-w-[350px] bg-white">
               <FieldToolbar
                 onAddField={(field) => {
                   setActiveForm({
@@ -77,7 +77,7 @@ function Page() {
               />
             </div>
 
-            <div className="w-full flex items-start justify-center pt-9 bg-gray-100 rounded-tl-[15px] inset-shadow-sm">
+            <div className="w-full flex items-start justify-center py-9 bg-gray-100 rounded-tl-[15px] inset-shadow-sm">
               <TabsContent value="design" className="mt-0 max-w-[50%]">
                 <DragDropContext onDragEnd={onDragEnd}>
                   <Droppable droppableId="form-fields" isDropDisabled={false}>
