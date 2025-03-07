@@ -60,6 +60,11 @@ export function FormExport({ form }: FormExportProps) {
       ${field.label}
     </label>
   </div>`;
+            case "date":
+              return `<div>
+    <label for="${field.id}">${field.label}</label>
+    <input type="date" id="${field.id}" name="${field.id}" />
+  </div>`;
             default:
               return "";
           }
@@ -118,7 +123,7 @@ export function FormExport({ form }: FormExportProps) {
           if (field.validation?.pattern) {
             rules.push(`{
             rule: 'customRegexp',
-            value: ${field.validation.pattern},
+            value: '${field.validation.pattern}',
             errorMessage: 'Please enter a valid value'
           }`);
           }
@@ -128,6 +133,82 @@ export function FormExport({ form }: FormExportProps) {
             rule: 'email',
             errorMessage: 'Please enter a valid email'
           }`);
+          }
+
+          if (field.type === "date") {
+            // Age validation
+            if (field.validation?.dateType === "minAge" && field.validation?.ageValue) {
+              rules.push(`{
+                validator: function(value) {
+                  const today = new Date();
+                  const birthDate = new Date(value);
+                  let age = today.getFullYear() - birthDate.getFullYear();
+                  const monthDifference = today.getMonth() - birthDate.getMonth();
+                  if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                  }
+                  return age >= ${field.validation.ageValue};
+                },
+                errorMessage: 'You must be at least ${field.validation.ageValue} years old'
+              }`);
+            }
+
+            // Date range validation
+            if (field.validation?.dateType === "dateRange") {
+              if (field.validation?.minDate) {
+                rules.push(`{
+                  validator: function(value) {
+                    return new Date(value) >= new Date('${field.validation.minDate}');
+                  },
+                  errorMessage: 'Date must be on or after ${field.validation.minDate}'
+                }`);
+              }
+
+              if (field.validation?.maxDate) {
+                rules.push(`{
+                  validator: function(value) {
+                    return new Date(value) <= new Date('${field.validation.maxDate}');
+                  },
+                  errorMessage: 'Date must be on or before ${field.validation.maxDate}'
+                }`);
+              }
+            }
+
+            // Future date validation
+            if (field.validation?.dateType === "futureDate") {
+              rules.push(`{
+                validator: function(value) {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+                  return new Date(value) > today;
+                },
+                errorMessage: 'Date must be in the future'
+              }`);
+            }
+
+            // Past date validation
+            if (field.validation?.dateType === "pastDate") {
+              rules.push(`{
+                validator: function(value) {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+                  return new Date(value) < today;
+                },
+                errorMessage: 'Date must be in the past'
+              }`);
+            }
+
+            // Business days only validation
+            if (field.validation?.dateType === "businessDay") {
+              rules.push(`{
+                validator: function(value) {
+                  const date = new Date(value);
+                  const dayOfWeek = date.getDay();
+                  return dayOfWeek !== 0 && dayOfWeek !== 6; // 0 is Sunday, 6 is Saturday
+                },
+                errorMessage: 'Date must be a business day (Mon-Fri)'
+              }`);
+            }
           }
 
           if (rules.length > 0) {
@@ -169,9 +250,11 @@ const formSchema = z.object({
   ${form.fields
         .map((field) => {
           let schema = `z.string()`;
+
           if (field.required) {
             schema += `.min(1, "This field is required")`;
           }
+
           if (field.validation) {
             if (field.validation.minLength) {
               schema += `.min(${field.validation.minLength}, "Minimum length is ${field.validation.minLength}")`;
@@ -180,7 +263,7 @@ const formSchema = z.object({
               schema += `.max(${field.validation.maxLength}, "Maximum length is ${field.validation.maxLength}")`;
             }
             if (field.type === "number") {
-              schema = `z.number()`;
+              schema = `z.coerce.number()`;
               if (field.validation.min !== undefined) {
                 schema += `.min(${field.validation.min}, "Minimum value is ${field.validation.min}")`;
               }
@@ -189,12 +272,76 @@ const formSchema = z.object({
               }
             }
             if (field.validation.pattern) {
-              schema += `.regex(new RegExp(${field.validation.pattern}), "Invalid format")`;
+              schema += `.regex(new RegExp("${field.validation.pattern}"), "Invalid format")`;
+            }
+
+            // Add date validations with Zod
+            if (field.type === "date") {
+              // Base date validation to ensure valid dates
+              schema = `z.string().refine((val) => !isNaN(Date.parse(val)), "Please enter a valid date")`;
+
+              // Minimum age validation
+              if (field.validation.dateType === "minAge" && field.validation.ageValue) {
+                schema += `.refine((value) => {
+                  const today = new Date();
+                  const birthDate = new Date(value);
+                  let age = today.getFullYear() - birthDate.getFullYear();
+                  const monthDiff = today.getMonth() - birthDate.getMonth();
+                  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                  }
+                  return age >= ${field.validation.ageValue};
+                }, "You must be at least ${field.validation.ageValue} years old")`;
+              }
+
+              // Date range validation
+              if (field.validation?.dateType === "dateRange") {
+                if (field.validation?.minDate) {
+                  schema += `.refine((value) => {
+                    return new Date(value) >= new Date("${field.validation.minDate}");
+                  }, "Date must be on or after ${field.validation.minDate}")`;
+                }
+
+                if (field.validation?.maxDate) {
+                  schema += `.refine((value) => {
+                    return new Date(value) <= new Date("${field.validation.maxDate}");
+                  }, "Date must be on or before ${field.validation.maxDate}")`;
+                }
+              }
+
+              // Future date validation
+              if (field.validation?.dateType === "futureDate") {
+                schema += `.refine((value) => {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+                  return new Date(value) > today;
+                }, "Date must be in the future")`;
+              }
+
+              // Past date validation
+              if (field.validation?.dateType === "pastDate") {
+                schema += `.refine((value) => {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+                  return new Date(value) < today;
+                }, "Date must be in the past")`;
+              }
+
+              // Business day validation
+              if (field.validation?.dateType === "businessDay") {
+                schema += `.refine((value) => {
+                  const date = new Date(value);
+                  const dayOfWeek = date.getDay();
+                  return dayOfWeek !== 0 && dayOfWeek !== 6; // 0 is Sunday, 6 is Saturday
+                }, "Date must be a business day (Mon-Fri)")`;
+              }
             }
           }
+
           if (field.type === "email") {
             schema += `.email("Invalid email address")`;
           }
+
           return `  ${field.id}: ${schema},`;
         })
         .join("\n")}
@@ -239,6 +386,18 @@ export default function Form() {
         <Textarea
           id="${field.id}"
           placeholder="${field.placeholder || ""}"
+          {...form.register("${field.id}")}
+        />
+        {form.formState.errors.${field.id} && (
+          <p className="text-sm text-red-500">{form.formState.errors.${field.id}?.message}</p>
+        )}
+      </div>`;
+            case "date":
+              return `<div className="space-y-2">
+        <Label htmlFor="${field.id}">${field.label}</Label>
+        <Input
+          id="${field.id}"
+          type="date"
           {...form.register("${field.id}")}
         />
         {form.formState.errors.${field.id} && (
