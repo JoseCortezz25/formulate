@@ -2,15 +2,10 @@
 
 import type { FormConfig } from "@/lib/types";
 import { Button } from "@/components/ui/button";
-import hljs from 'highlight.js';
 import { CopyIcon, CheckIcon } from "lucide-react";
-
-// Import highlight.js CSS (you can choose from various themes)
-import 'highlight.js/styles/atom-one-dark.css';
-
-import 'highlight.js/lib/languages/javascript';
-import 'highlight.js/lib/languages/typescript';
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface FormExportProps {
   form: FormConfig
@@ -18,7 +13,6 @@ interface FormExportProps {
 
 export function FormExport({ form }: FormExportProps) {
   const [copied, setCopied] = useState(false);
-  const codeRef = useRef<HTMLElement>(null);
 
   const generateBasicHtml = () => {
     const formHtml = `<form id="form-${form.id}">
@@ -72,16 +66,18 @@ export function FormExport({ form }: FormExportProps) {
         })
         .join("\n\n")}
   
-  <button type="submit">Submit</button>
+  <button type="submit" id="submit-btn">Submit</button>
 </form>`;
 
     return formHtml + "\n\n" + generateValidationScript();
   };
 
   const generateValidationScript = () => {
-    const validationScript = `
-    <script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
+    const validationScript = `<script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
     <script>
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+
     const validator = new JustValidate('#form-${form.id}', {
       errorFieldCssClass: 'is-invalid',
       errorLabelStyle: {
@@ -144,8 +140,9 @@ export function FormExport({ form }: FormExportProps) {
         .filter(Boolean)
         .join("\n\n")}
   
-    validator.onValidate(({isValid}) => {
+    validator.onValidate(({ isValid }) => {
       console.log('Validation occurred', isValid);
+      btn.disabled = !isValid;
     });
   
     validator.onSuccess((event) => {
@@ -302,12 +299,6 @@ export default function Form() {
 }`;
   };
 
-  useEffect(() => {
-    if (codeRef.current) {
-      hljs.highlightElement(codeRef.current);
-    }
-  }, []);
-
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(form.type === "basic" ? generateBasicHtml() : generateShadcnCode());
     setCopied(true);
@@ -346,14 +337,18 @@ export default function Form() {
               </span>
             </div>
             <div className="code-container">
-              <pre className="m-0 p-0 bg-transparent">
-                <code
-                  ref={codeRef}
-                  className="typescript"
-                >
-                  {form.type === "basic" ? generateBasicHtml() : generateShadcnCode()}
-                </code>
-              </pre>
+              <SyntaxHighlighter
+                language={form.type === "basic" ? "html" : "jsx"}
+                style={atomDark}
+                customStyle={{
+                  margin: 0,
+                  borderRadius: '0 0 0.5rem 0.5rem',
+                  fontSize: '0.9rem'
+                }}
+                showLineNumbers
+              >
+                {form.type === "basic" ? generateBasicHtml() : generateShadcnCode()}
+              </SyntaxHighlighter>
             </div>
           </div>
         </div>
