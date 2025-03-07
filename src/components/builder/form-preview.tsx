@@ -22,6 +22,7 @@ export function FormPreview({ form }: FormPreviewProps) {
     if (field.required && !value) {
       return "This field is required";
     }
+
     if (field.validation) {
       if (field.validation.minLength && value.length < field.validation.minLength) {
         return `Minimum length is ${field.validation.minLength}`;
@@ -41,10 +42,71 @@ export function FormPreview({ form }: FormPreviewProps) {
       if (field.validation.pattern && !new RegExp(field.validation.pattern).test(value)) {
         return "Invalid format";
       }
+
+      // Date validations
+      if (field.type === "date") {
+        const dateValue = new Date(value);
+
+        // Check for invalid date
+        if (isNaN(dateValue.getTime())) {
+          return "Please enter a valid date";
+        }
+
+        // Minimum age validation
+        if (field.validation.dateType === "minAge" && field.validation.ageValue) {
+          const today = new Date();
+          let age = today.getFullYear() - dateValue.getFullYear();
+          const monthDiff = today.getMonth() - dateValue.getMonth();
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dateValue.getDate())) {
+            age--;
+          }
+          if (age < field.validation.ageValue) {
+            return `You must be at least ${field.validation.ageValue} years old`;
+          }
+        }
+
+        // Date range validation
+        if (field.validation.dateType === "dateRange") {
+          if (field.validation.minDate && dateValue < new Date(field.validation.minDate)) {
+            return `Date must be on or after ${field.validation.minDate}`;
+          }
+          if (field.validation.maxDate && dateValue > new Date(field.validation.maxDate)) {
+            return `Date must be on or before ${field.validation.maxDate}`;
+          }
+        }
+
+        // Future date validation
+        if (field.validation.dateType === "futureDate") {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          if (dateValue <= today) {
+            return "Date must be in the future";
+          }
+        }
+
+        // Past date validation
+        if (field.validation.dateType === "pastDate") {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          if (dateValue >= today) {
+            return "Date must be in the past";
+          }
+        }
+
+        // Business day validation
+        if (field.validation.dateType === "businessDay") {
+          const dayOfWeek = dateValue.getDay();
+          if (dayOfWeek === 0 || dayOfWeek === 6) { // 0 is Sunday, 6 is Saturday
+            return "Date must be a business day (Mon-Fri)";
+          }
+        }
+      }
     }
+
     if (field.type === "email" && !/\S+@\S+\.\S+/.test(value)) {
       return "Invalid email address";
     }
+
     return "";
   };
 
@@ -66,7 +128,6 @@ export function FormPreview({ form }: FormPreviewProps) {
 
     if (!hasErrors) {
       console.log("Form submitted successfully", formState);
-      // Here you would typically send the form data to a server
       alert("Form submitted successfully!");
     }
   };
@@ -83,7 +144,7 @@ export function FormPreview({ form }: FormPreviewProps) {
         <form className="space-y-6" onSubmit={handleSubmit}>
           {form.fields.map((field) => (
             <div key={field.id} className="space-y-2">
-              <Label htmlFor={field.id}>{field.label}</Label>
+              {field.type !== "checkbox" && <Label htmlFor={field.id}>{field.label}</Label>}
 
               {field.type === "text" && (
                 <Input
@@ -133,6 +194,16 @@ export function FormPreview({ form }: FormPreviewProps) {
                   type="password"
                   id={field.id}
                   placeholder={field.placeholder}
+                  required={field.required}
+                  value={formState[field.id] || ""}
+                  onChange={(e) => handleInputChange(field.id, e.target.value)}
+                />
+              )}
+
+              {field.type === "date" && (
+                <Input
+                  type="date"
+                  id={field.id}
                   required={field.required}
                   value={formState[field.id] || ""}
                   onChange={(e) => handleInputChange(field.id, e.target.value)}
