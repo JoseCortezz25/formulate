@@ -40,7 +40,7 @@ const Hero = () => {
         </div>
 
         <div className="text-center mx-auto flex space-x-2 mt-[20px]">
-          <button className="border-2 border-fm-black py-3 px-6 rounded-full font-semibold hover:bg-fm-black hover:text-white transition-colors duration-200 ease-in-out cursor-pointer">
+          <button className="z-10 border-2 border-fm-black py-3 px-6 rounded-full font-semibold hover:bg-fm-black hover:text-white transition-colors duration-200 ease-in-out cursor-pointer">
             <Link href="builder">
               Get Started
             </Link>
