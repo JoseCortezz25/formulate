@@ -6,7 +6,7 @@ const BuilderLayout = ({
   children: ReactNode
 }) => {
   return (
-    <div>
+    <div className="bg-gray-100 h-screen w-full">
       {children}
     </div>
   );

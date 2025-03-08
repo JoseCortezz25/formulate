@@ -71,7 +71,7 @@ export function FieldToolbar({ onAddField }: FieldToolbarProps) {
   };
 
   return (
-    <div className="space-y-4 mx-6 my-4  sticky top-10">
+    <div className="space-y-4 mx-6 my-4 lg:sticky lg:top-10">
       <div className="relative">
         <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
@@ -82,7 +82,7 @@ export function FieldToolbar({ onAddField }: FieldToolbarProps) {
         />
       </div>
 
-      <ScrollArea className="h-[calc(100vh-8rem)]">
+      <ScrollArea className="max-h-[200px] overflow-scroll lg:overflow-auto lg:max-h-none md:h-[calc(100vh-8rem)]">
         {filteredFields.map((category) => (
           <div key={category.category} className="mb-6">
             <h3 className="text-sm font-medium mb-2 text-muted-foreground">{category.category}</h3>

@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { FormFieldEditor } from "@/components/builder/form-field-editor";
 
 function Page() {
+  const [activeTab, setActiveTab] = useState("design");
   const [activeForm, setActiveForm] = useState<FormConfig>({
     id: "1",
     name: "New Form",
@@ -31,11 +32,16 @@ function Page() {
   };
 
   return (
-    <div className="flex ">
+    <div className="flex">
       {/* Main Content */}
       <div className="w-full">
-        <Tabs defaultValue="design" className="w-full gap-0">
-          <div className="flex items-center justify-between p-4 bg-white">
+        <Tabs
+          defaultValue="design"
+          className="w-full gap-0"
+          onValueChange={(value) => setActiveTab(value)}
+        >
+
+          <div className="flex flex-col gap-[24px] lg:gap-0 lg:flex-row items-center lg:justify-between p-4 bg-white">
             <span className="font-bold text-lg lg:max-w-[300px] lg:w-[300px]">
               Formulate
             </span>
@@ -64,21 +70,25 @@ function Page() {
             </div>
           </div>
 
-          <div className="flex w-full">
+          <div className="flex w-full flex-col lg:flex-row">
             {/* Left Sidebar - Field Toolbar */}
-            <div className="min-w-[350px] bg-white">
-              <FieldToolbar
-                onAddField={(field) => {
-                  setActiveForm({
-                    ...activeForm,
-                    fields: [...activeForm.fields, field]
-                  });
-                }}
-              />
-            </div>
 
-            <div className="w-full flex items-start justify-center py-9 bg-gray-100 rounded-tl-[15px] inset-shadow-sm">
-              <TabsContent value="design" className="mt-0 max-w-[50%]">
+            {activeTab === 'design' && (
+              <div className="w-full lg:min-w-[350px] lg:max-w-[350px] bg-white rounded-b-[15px] lg:rounded-none">
+                <FieldToolbar
+                  onAddField={(field) => {
+                    setActiveForm({
+                      ...activeForm,
+                      fields: [...activeForm.fields, field]
+                    });
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Right Sidebar - Form Editor, Preview, Export */}
+            <div className="w-full flex items-start justify-center py-9 lg:rounded-tl-[16px] inset-shadow-sm bg-gray-100">
+              <TabsContent value="design" className="mt-0 max-w-[90%] lg:max-w-[50%]">
                 <DragDropContext onDragEnd={onDragEnd}>
                   <Droppable droppableId="form-fields" isDropDisabled={false}>
                     {(provided) => (
@@ -125,11 +135,11 @@ function Page() {
                 </DragDropContext>
               </TabsContent>
 
-              <TabsContent value="preview">
+              <TabsContent value="preview" className="max-w-[90%] lg:max-w-none">
                 <FormPreview form={activeForm} />
               </TabsContent>
 
-              <TabsContent value="export">
+              <TabsContent value="export" className="max-w-[90%] lg:max-w-none">
                 <FormExport form={activeForm} />
               </TabsContent>
             </div>
