@@ -48,8 +48,8 @@ export default function Home() {
         <div className="mx-auto lg:max-w-[980px] flex flex-col md:flex-row justify-between items-center">
           <div className="lg:max-w-[50%]">
             <h2 className="text-fm-black text-[25px] leading-[30px] font-bold mb-[20px] text-center md:text-left">
-              Simple, sencillo y rápido. <br />
-              Exporta tu formulario en segundos.
+              Simple, easy and fast. <br />
+              Export your forms in seconds.
             </h2>
           </div>
 
