@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   authors: [
     {
       name: "Alfonso Chavarro",
-      url: "https://github.com/JoseCortezz25",
+      url: "https://github.com/JoseCortezz25"
     }
   ]
 };
@@ -25,4 +25,4 @@ export default function RootLayout({
       <body className={montserrat.className}>{children}</body>
     </html>
   );
-}
+};
