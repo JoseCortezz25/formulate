@@ -6,10 +6,10 @@ const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Formulate",
-  description: "Generate forms for React (with Shadcn + React Hook Form) or native HTML (with Just Validate), ready for production, without the headache.",
+  description: "Build forms with ease, save time, and get started quickly.",
   authors: [
     {
-      name: "Jose Cortez",
+      name: "Alfonso Chavarro",
       url: "https://github.com/JoseCortezz25"
     }
   ]
@@ -25,4 +25,4 @@ export default function RootLayout({
       <body className={montserrat.className}>{children}</body>
     </html>
   );
-}
+};
