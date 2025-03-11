@@ -22,14 +22,15 @@ const Hero = () => {
   };
 
   return (
-    <section className="w-full pt-[144px] pb-[50px] md:pb-[144px] min-h-screen flex items-center px-6">
+    <section className="w-full pt-[144px] pb-[50px] md:pt-[184px] md:pb-[144px] min-h-screen flex items-center px-6">
       <div className="w-full mx-auto lg:max-w-[980px] flex lg:justify-center flex-col lg:items-center relative">
         <div className="w-full mb-8">
           <h1 className="text-fm-black text-center text-[25px] md:text-[38.75px] font-bold leading-[44px] mb-[8px]">
             With Formulate
           </h1>
 
-          <h2 className="text-fm-black text-center font-bold text-[40px] leading-[46px] lg:text-[82px] lg:leading-[82px] mb-[20px]">
+          <h2 className="text-fm-black text-center font-bold text-[40px] leading-[46px] lg:text-[82px] lg:leading-[82px] mb-[20px] relative">
+            <div className="blob-gradient absolute top-[65px] w-full h-[220px] opacity-50"></div>
             Create forms.<br />
             <span className="blue-mark">Save time.</span>
           </h2>
@@ -39,8 +40,8 @@ const Hero = () => {
           </p>
         </div>
 
-        <div className="text-center mx-auto flex space-x-2 mt-[20px]">
-          <button className="z-10 border-2 border-fm-black py-3 px-6 rounded-full font-semibold hover:bg-fm-black hover:text-white transition-colors duration-200 ease-in-out cursor-pointer">
+        <div className="text-center mx-auto flex space-x-2 mt-[20px] z-10">
+          <button className="border-2 border-fm-black py-3 px-6 rounded-full font-semibold hover:bg-fm-black hover:text-white transition-colors duration-200 ease-in-out cursor-pointer">
             <Link href="builder">
               Get Started
             </Link>
@@ -56,7 +57,7 @@ const Hero = () => {
         <motion.div
           initial="offscreen"
           whileInView="onscreen"
-          viewport={{ amount: 0.75, once: true }}
+          viewport={{ amount: 0.5, once: true }}
         >
           <motion.div
             className="hidden md:flex"

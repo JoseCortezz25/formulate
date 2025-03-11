@@ -72,14 +72,14 @@ export function FormExport({ form }: FormExportProps) {
         .join("\n\n")}
   
   <button type="submit" id="submit-btn">Submit</button>
-</form>`;
-
+</form>`
+      ;
     return formHtml + "\n\n" + generateValidationScript();
   };
 
   const generateValidationScript = () => {
     const validationScript = `<script src="https://unpkg.com/just-validate@latest/dist/just-validate.production.min.js"></script>
-    <script>
+<script>
     const btn = document.getElementById('submit-btn');
     btn.disabled = true;
 
@@ -220,16 +220,19 @@ export function FormExport({ form }: FormExportProps) {
         })
         .filter(Boolean)
         .join("\n\n")}
-  
     validator.onValidate(({ isValid }) => {
       console.log('Validation occurred', isValid);
       btn.disabled = !isValid;
     });
   
+    validator.onFail((event) => {
+      console.log('Validation fails', event);
+    });
+
     validator.onSuccess((event) => {
       console.log('Validation passes and form submitted', event);
     });
-  </script>`;
+</script>`;
 
     return validationScript;
   };
@@ -465,7 +468,7 @@ export default function Form() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="w-full mx-auto">
       <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
         <div>
           <div className="flex items-center justify-between mb-4">
