@@ -11,9 +11,12 @@ import { FormExport } from "@/components/builder/form-export";
 import { cn } from "@/lib/utils";
 import { FormFieldEditor } from "@/components/builder/form-field-editor";
 import Link from "next/link";
+import { Plus } from "lucide-react";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 
 function Page() {
   const [activeTab, setActiveTab] = useState("design");
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [activeForm, setActiveForm] = useState<FormConfig>({
     id: "1",
     name: "New Form",
@@ -32,6 +35,15 @@ function Page() {
     setActiveForm({ ...activeForm, fields });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleAddField = (field: any) => {
+    setActiveForm({
+      ...activeForm,
+      fields: [...activeForm.fields, field]
+    });
+    setIsDrawerOpen(false);
+  };
+
   return (
     <div className="flex">
       {/* Main Content */}
@@ -41,7 +53,6 @@ function Page() {
           className="w-full gap-0"
           onValueChange={(value) => setActiveTab(value)}
         >
-
           <div className="flex flex-col gap-[24px] lg:gap-0 lg:flex-row items-center lg:justify-between p-4 bg-white">
             <span className="font-bold text-lg lg:max-w-[300px] lg:w-[300px] lg:text-xl cursor-pointer">
               <Link href="/">
@@ -75,16 +86,10 @@ function Page() {
 
           <div className="flex w-full flex-col lg:flex-row">
             {/* Left Sidebar - Field Toolbar */}
-
             {activeTab === 'design' && (
-              <div className="w-full lg:min-w-[350px] lg:max-w-[350px] bg-white rounded-b-[15px] lg:rounded-none">
+              <div className="w-full lg:min-w-[350px] lg:max-w-[350px] bg-white rounded-b-[15px] lg:rounded-none hidden md:flex ">
                 <FieldToolbar
-                  onAddField={(field) => {
-                    setActiveForm({
-                      ...activeForm,
-                      fields: [...activeForm.fields, field]
-                    });
-                  }}
+                  onAddField={handleAddField}
                 />
               </div>
             )}
@@ -149,6 +154,29 @@ function Page() {
           </div>
         </Tabs>
       </div>
+
+      {/* Mobile Floating Action Button and Drawer */}
+      {activeTab === 'design' && (
+        <div className="fixed bottom-6 right-6 md:hidden">
+          <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+            <DrawerTrigger asChild>
+              <Button
+                size="icon"
+                className="rounded-full size-14 shadow-lg"
+              >
+                <Plus className="size-8" />
+              </Button>
+            </DrawerTrigger>
+            <DrawerContent>
+              <div className="h-full overflow-y-auto">
+                <FieldToolbar
+                  onAddField={handleAddField}
+                />
+              </div>
+            </DrawerContent>
+          </Drawer>
+        </div>
+      )}
     </div>
   );
 }

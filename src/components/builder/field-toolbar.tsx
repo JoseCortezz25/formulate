@@ -82,7 +82,7 @@ export function FieldToolbar({ onAddField }: FieldToolbarProps) {
         />
       </div>
 
-      <ScrollArea className="max-h-[200px] overflow-scroll lg:overflow-auto lg:max-h-none md:h-[calc(100vh-8rem)]">
+      <ScrollArea className="max-h-[350px] overflow-scroll md:overflow-auto md:max-h-none md:h-[calc(100vh-8rem)]">
         {filteredFields.map((category) => (
           <div key={category.category} className="mb-6">
             <h3 className="text-sm font-medium mb-2 text-muted-foreground">{category.category}</h3>
