@@ -5,14 +5,15 @@ import { Github } from "../icons";
 
 const Hero = () => {
   return (
-    <section className="w-full pt-[144px] pb-[50px] md:pb-[144px] min-h-screen flex items-center px-6">
+    <section className="w-full pt-[144px] pb-[50px] md:pt-[184px] md:pb-[144px] min-h-screen flex items-center px-6">
       <div className="w-full mx-auto lg:max-w-[980px] flex lg:justify-center flex-col lg:items-center relative">
         <div className="w-full mb-8">
           <h1 className="text-fm-black text-center text-[25px] md:text-[38.75px] font-bold leading-[44px] mb-[8px]">
             With Formulate
           </h1>
 
-          <h2 className="text-fm-black text-center font-bold text-[40px] leading-[46px] lg:text-[82px] lg:leading-[82px] mb-[20px]">
+          <h2 className="text-fm-black text-center font-bold text-[40px] leading-[46px] lg:text-[82px] lg:leading-[82px] mb-[20px] relative">
+            <div className="blob-gradient absolute top-[65px] w-full h-[220px] opacity-50"></div>
             Create forms.<br />
             <span className="blue-mark">Save time.</span>
           </h2>

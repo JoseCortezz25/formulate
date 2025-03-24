@@ -166,8 +166,6 @@
   }
 }
 
-
-
 .blue-mark {
   position: relative;
   display: inline-block;
@@ -175,7 +173,7 @@
 }
 
 .blue-mark::after {
-  content: "";
+  content: '';
   background: var(--color-blue-500);
   display: flex;
   width: 100%;
@@ -194,4 +192,11 @@
     bottom: -3px;
     left: 30px;
   }
+}
+
+.blob-gradient {
+  background: radial-gradient(circle, #213555, #6e95d7 47%, #00d4ff00);
+  filter: blur(100px);
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }

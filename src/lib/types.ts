@@ -7,6 +7,7 @@ export type FieldType =
   | 'checkbox'
   | 'radio'
   | 'textarea'
+  | 'switch'
   | 'date';
 
 export interface FormField {

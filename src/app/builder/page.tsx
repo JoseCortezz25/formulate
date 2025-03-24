@@ -10,6 +10,7 @@ import { FormPreview } from "@/components/builder/form-preview";
 import { FormExport } from "@/components/builder/form-export";
 import { cn } from "@/lib/utils";
 import { FormFieldEditor } from "@/components/builder/form-field-editor";
+import Link from "next/link";
 
 function Page() {
   const [activeTab, setActiveTab] = useState("design");
@@ -42,8 +43,10 @@ function Page() {
         >
 
           <div className="flex flex-col gap-[24px] lg:gap-0 lg:flex-row items-center lg:justify-between p-4 bg-white">
-            <span className="font-bold text-lg lg:max-w-[300px] lg:w-[300px]">
-              Formulate
+            <span className="font-bold text-lg lg:max-w-[300px] lg:w-[300px] lg:text-xl cursor-pointer">
+              <Link href="/">
+                Formulate
+              </Link>
             </span>
 
             <TabsList className="rounded-full px-1 h-auto">
@@ -135,11 +138,11 @@ function Page() {
                 </DragDropContext>
               </TabsContent>
 
-              <TabsContent value="preview" className="max-w-[90%] lg:max-w-none">
+              <TabsContent value="preview" className="max-w-[90%] lg:max-w-[50%]">
                 <FormPreview form={activeForm} />
               </TabsContent>
 
-              <TabsContent value="export" className="max-w-[90%] lg:max-w-none">
+              <TabsContent value="export" className="max-w-[90%] lg:max-w-[50%]">
                 <FormExport form={activeForm} />
               </TabsContent>
             </div>
