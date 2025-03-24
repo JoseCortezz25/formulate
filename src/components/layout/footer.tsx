@@ -2,9 +2,9 @@ import { Github } from "../icons";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#F5F5F7] py-5 px-6">
+    <footer className="py-5 px-6">
       <div className="max-w-[980px] mx-auto flex flex-col md:flex-row justify-center">
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 mx-auto">
           <a
             href="https://github.com/JoseCortezz25"
             target="_blank"

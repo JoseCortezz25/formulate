@@ -13,7 +13,7 @@ const Hero = () => {
           </h1>
 
           <h2 className="text-fm-black text-center font-bold text-[40px] leading-[46px] lg:text-[82px] lg:leading-[82px] mb-[20px] relative">
-            <div className="blob-gradient absolute top-[65px] w-full h-[220px] opacity-50"></div>
+            
             Create forms.<br />
             <span className="blue-mark">Save time.</span>
           </h2>
@@ -23,21 +23,23 @@ const Hero = () => {
           </p>
         </div>
 
-        <div className="text-center mx-auto flex space-x-2 mt-[20px]">
-          <Link href="builder">
-            <button className="z-10 border-2 border-fm-black py-3 px-6 rounded-full font-semibold hover:bg-fm-black hover:text-white transition-colors duration-200 ease-in-out cursor-pointer">
+        <div className="text-center mx-auto flex space-x-2 mt-[20px] z-10">
+          <Link href="/builder">
+            <button className="z-10 border-2 border-fm-black bg-fm-black text-white py-3 px-6 rounded-full font-semibold hover:bg-fm-black hover:text-white transition-colors duration-200 ease-in-out cursor-pointer">
                 Get Started
             </button>
           </Link>
 
           <a href="https://github.com/JoseCortezz25/formulate" target="_blank" rel="noopener noreferrer">
-            <button className="bg-fm-black border-2 border-fm-black p-3 rounded-full font-semibold cursor-pointer">
-              <Github className="text-white size-6" />
+            <button className="bg-fm-black/2 border-2 border-fm-black/2 p-3 rounded-full font-semibold cursor-pointer">
+              <Github className="text-fm-black size-6" />
             </button>
           </a>
         </div>
-        <div className="hidden md:flex">
-          <img src="/screenshot.png" alt="Screenshot of page" />
+
+        <div className="hidden md:flex relative">
+          <div className="blob-gradient absolute top-[125px] w-full h-[220px] opacity-50 pointer-events-none"></div>
+          <img src="/screenshot.png" alt="Screenshot of page" className="relative z-10 scale-115 pointer-events-none" />
         </div>
       </div>
     </section>

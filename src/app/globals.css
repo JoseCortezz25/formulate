@@ -195,7 +195,7 @@
 }
 
 .blob-gradient {
-  background: radial-gradient(circle, #213555, #6e95d7 47%, #00d4ff00);
+  background: radial-gradient(circle, #21355599, #6e95d7 47%, #00d4ff00);
   filter: blur(100px);
   transform: translateZ(0);
   backface-visibility: hidden;
