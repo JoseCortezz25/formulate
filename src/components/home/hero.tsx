@@ -25,19 +25,22 @@ const Hero = () => {
         </div>
 
         <div className="text-center mx-auto flex space-x-2 mt-[20px] z-10">
-          <Link href="/builder">
+          <Link href="/builder" onClick={() => sendGAEvent('event', 'buttonClicked', { value: 'Get Started' })}>
             <button 
               className="z-10 border-2 border-fm-black bg-fm-black text-white py-3 px-6 rounded-full font-semibold hover:bg-fm-black hover:text-white transition-colors duration-200 ease-in-out cursor-pointer"
-              onClick={() => sendGAEvent('event', 'buttonClicked', { value: 'Get Started' })}
             >
               Get Started
             </button>
           </Link>
 
-          <a href="https://github.com/JoseCortezz25/formulate" target="_blank" rel="noopener noreferrer">
-              <button 
+          <a 
+            href="https://github.com/JoseCortezz25/formulate" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            onClick={() => sendGAEvent('event', 'buttonClicked', { value: 'GitHub' })}
+          >
+            <button 
               className="bg-fm-black/2 border-2 border-fm-black/2 p-3 rounded-full font-semibold cursor-pointer"
-              onClick={() => sendGAEvent('event', 'buttonClicked', { value: 'GitHub' })}
             >
               <Github className="text-fm-black size-6" />
             </button>
