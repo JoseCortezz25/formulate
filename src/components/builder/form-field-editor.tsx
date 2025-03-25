@@ -112,7 +112,7 @@ export function FormFieldEditor({ field, onUpdate, onDelete }: FormFieldEditorPr
             </div>
             {isOpen && (
               <div className="space-y-3 p-4 bg-muted/50 rounded-md">
-                {(field.type === "text" || field.type === "textarea") && (
+                {(field.type === "text" || field.type === "textarea" || field.type === "password") && (
                   <>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="flex-1/2 space-y-2">

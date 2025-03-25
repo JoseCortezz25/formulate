@@ -469,9 +469,9 @@ export default function Form() {
 
   return (
     <div className="w-full mx-auto">
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+      <div className="sm:bg-white sm:p-6 sm:rounded-lg sm:shadow-sm sm:border sm:border-gray-200">
         <div>
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-6 sm:mb-4">
             <h3 className="text-lg font-semibold">Generated Code</h3>
             <Button
               variant="outline"
