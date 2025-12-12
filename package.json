@@ -26,7 +26,7 @@
     "highlight.js": "^11.11.1",
     "lucide-react": "^0.372.0",
     "motion": "^12.4.10",
-    "next": "15.2.1",
+    "next": "15.2.8",
     "react": "19.0.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "19.0.0",
